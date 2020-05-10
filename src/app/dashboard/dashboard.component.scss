@@ -1,0 +1,16 @@
+@import "../../assets/common.scss";
+
+.card {
+    height: auto;
+    margin: 2% auto;
+    max-width: 400px;
+    background-color: $white-color;
+    padding: 25px;
+    text-align: left;
+  }
+
+  .success{
+    color: #3d58bb;
+    font-size: 24px;
+    font-weight: 600;
+  }
