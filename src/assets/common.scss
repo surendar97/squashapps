@@ -1,23 +1,21 @@
 $active: #ed5901;
 $white-color: #ffffff;
-
 @mixin tabStatus($border-radius, $color, $bg, $padding, $width, $height) {
-  border-radius: $border-radius;
-  color: $color;
-  background-color: $bg;
-  padding: $padding;
-  width: $width;
-  height: $height;
+    border-radius: $border-radius;
+    color: $color;
+    background-color: $bg;
+    padding: $padding;
+    width: $width;
+    height: $height;
 }
 
-@mixin activeButton($height, $width, $color, $bg, $border, $border-radius, $outline, $m-top, $m) {
-  height: $height;
-  width: $width;
-  color: $color;
-  background-color: $bg;
-  border: $border;
-  border-radius: $border-radius;
-  outline: $outline;
-  margin-top: $m-top;
-  margin: $m;
+@mixin activeButton($height, $width, $color, $bg, $border, $border-radius, $outline, $m) {
+    height: $height;
+    width: $width;
+    color: $color;
+    background-color: $bg;
+    border: $border;
+    border-radius: $border-radius;
+    outline: $outline;
+    margin: $m;
 }

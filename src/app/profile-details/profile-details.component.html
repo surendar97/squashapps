@@ -1,20 +1,20 @@
 <mat-tab-group mat-align-tabs="center" animationDuration="0ms" [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)">
-    <form fxLayout="column" class="example-form" [formGroup]="userDetails">
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <div class="circle-orng" *ngIf="!userProfileTab">1</div>
-                <div class="circle-blue" *ngIf="userProfileTab">
-                    <mat-icon>done</mat-icon>
-                </div>
-                <div class="tab-label">Personal Details</div>
-            </ng-template>
-            <div class="tab">
-                <p class="tab-title">Add your personal details</p>
-                <p class="tab-content">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                </p>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <div class="circle-orng" *ngIf="personalDetail.invalid">1</div>
+            <div class="circle-blue" *ngIf="personalDetail.valid">
+                <mat-icon>done</mat-icon>
             </div>
-            <mat-card class="card">
+            <div class="tab-label">Personal Details</div>
+        </ng-template>
+        <div class="tab">
+            <p class="tab-title">Add your personal details</p>
+            <p class="tab-content">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </p>
+        </div>
+        <mat-card class="card">
+            <form fxLayout="column" class="example-form" [formGroup]="personalDetail">
                 <div class="fields" fxLayout="column">
                     <span class="label"> Full Name</span>
                     <mat-form-field class="full-width">
@@ -25,9 +25,9 @@
                 <div fxLayout="column">
                     <span class="label">Gender</span>
                     <div fxLayout="row">
-                        <button fxFlex="20" type="button" class="cancel-button" [ngClass]="{'selected-gender': isMale}" mat-raised-button (click)="selectGender('male')">Male</button>
-                        <button fxFlex="20" type="button" class="cancel-button" [ngClass]="{'selected-gender': isFemale}" mat-raised-button (click)="selectGender('female')">Female</button>
-                        <button fxFlex="20" type="button" class="cancel-button" [ngClass]="{'selected-gender': isOthers}" mat-raised-button (click)="selectGender('others')">Others</button>
+                        <button fxFlex="20" type="button" class="cancel-button gender-button" [ngClass]="{'selected-gender': isMale}" mat-raised-button (click)="selectGender('male')">Male</button>
+                        <button fxFlex="20" type="button" class="cancel-button gender-button" [ngClass]="{'selected-gender': isFemale}" mat-raised-button (click)="selectGender('female')">Female</button>
+                        <button fxFlex="20" type="button" class="cancel-button gender-button" [ngClass]="{'selected-gender': isOthers}" mat-raised-button (click)="selectGender('others')">Others</button>
                     </div>
                 </div>
                 <div class="fields" fxLayout="column">
@@ -46,9 +46,9 @@
                 <div class="fields" fxLayout="column">
                     <span class="label">State</span>
                     <mat-form-field class="full-width">
-                        <mat-select class="input-field" [(ngModel)]="selectedState" formControlName="state">
-                            <mat-option *ngFor="let st of state" [value]="selectedState">
-                                {{st}}
+                        <mat-select class="input-field" [(ngModel)]="selectedState" formControlName="states">
+                            <mat-option *ngFor="let state of states" [value]="selectedState">
+                                {{state}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -58,33 +58,38 @@
                     <mat-form-field class="full-width">
                         <div fxLayout="row" class="input-field">
                             <div fxLayout="row" class="telecode">
-                                <img class="rounded-input" alt="flag_" src="{{selectedCountriesFlag}}"> {{userDetails.get('teleCode').value}}
+                                <img class="rounded-input" alt="flag_" src="{{selectedCountriesFlag}}"> {{personalDetail.value.teleCode}}
                             </div>
                             <input matInput type="number" formControlName="mobileNumber" numbersOnly autocomplete="off">
                         </div>
                     </mat-form-field>
+                    <div style="color: red;" *ngIf="personalDetailControles.mobileNumber.errors && personalDetailControles.mobileNumber.touched">
+                        Enter valid mobileNumber
+                    </div>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
-                    <button type="submit" class="save-button" mat-raised-button (click)="moveToSelectedTab(1)">NEXT</button>
+                    <button type="submit" [disabled]="personalDetail.invalid" [ngClass]="{'disabled-button': personalDetail.invalid}" class="save-button" mat-raised-button (click)="moveToSelectedTab(1)">NEXT</button>
                 </div>
-            </mat-card>
-        </mat-tab>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <div class="circle-orng" *ngIf="!companyProfileTab">2</div>
-                <div class="circle-blue" *ngIf="companyProfileTab">
-                    <mat-icon>done</mat-icon>
-                </div>
-                <div class="tab-label">Company Details</div>
-            </ng-template>
-
-            <div class="tab">
-                <p class="tab-title">Add your company details</p>
-                <p class="tab-content">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                </p>
+            </form>
+        </mat-card>
+    </mat-tab>
+    <mat-tab [disabled]="personalDetail.invalid">
+        <ng-template mat-tab-label>
+            <div class="circle-orng" *ngIf="companyDetail.invalid">2</div>
+            <div class="circle-blue" *ngIf="companyDetail.valid">
+                <mat-icon>done</mat-icon>
             </div>
-            <mat-card class="card">
+            <div class="tab-label">Company Details</div>
+        </ng-template>
+
+        <div class="tab">
+            <p class="tab-title">Add your company details</p>
+            <p class="tab-content">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            </p>
+        </div>
+        <mat-card class="card">
+            <form fxLayout="column" class="example-form" [formGroup]="companyDetail">
                 <div fxLayout="row" (click)="fileUpload()">
                     <img [src]="url" class="rounded">
                     <p class="upload">Upload your company logo
@@ -102,6 +107,10 @@
                     <mat-form-field class="full-width">
                         <input class="input-field" matInput type="text" formControlName="emailId" autocomplete="off">
                     </mat-form-field>
+                    <div style="color: red;" *ngIf="companyDetailControles.emailId.errors && companyDetailControles.emailId.touched">
+                        Enter valid emailId
+                    </div>
+
                 </div>
                 <div class="fields" fxLayout="column">
                     <span class="label">Job Title</span>
@@ -112,7 +121,7 @@
                 <div class="fields" fxLayout="column">
                     <span class="label">Years of Experience</span>
                     <mat-form-field class="full-width">
-                        <input class="input-field" matInput type="text" formControlName="experience" autocomplete="off">
+                        <input class="input-field" matInput type="number" formControlName="experience" autocomplete="off">
                     </mat-form-field>
                 </div>
                 <div>
@@ -121,37 +130,37 @@
                     </mat-checkbox>
                 </div>
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
-                    <button fxFlex="30" type="button" class="cancel-button" mat-raised-button (click)="moveToSelectedTab(0)">BACK</button>
-                    <button fxFlex="70" type="submit" class="save-button" [ngClass]="{'disabled-button': userDetails.invalid}" [disabled]="userDetails.invalid" mat-raised-button (click)="moveToSelectedTab(2)">Send OTP</button>
+                    <button fxFlex="30" type="button" class="cancel-button gender-button" mat-raised-button (click)="moveToSelectedTab(0)">BACK</button>
+                    <button fxFlex="70" type="submit" class="save-button" mat-raised-button [disabled]="companyDetail.invalid" [ngClass]="{'disabled-button': companyDetail.invalid}" (click)="moveToSelectedTab(2);sendOtp ()">Send OTP</button>
                 </div>
-            </mat-card>
-        </mat-tab>
-        <mat-tab [disabled]="false">
-            <ng-template mat-tab-label>
-                <div class="circle-orng">3</div>
-                <div class="tab-label">Company Details</div>
-            </ng-template>
-            <div class="tab">
-                <p class="tab-title"> Enter your OTP</p>
-                <p class="tab-content">
-                    For tour security, we need to verify your identity. We sent a 5-digit code to
-                    <strong>name@domain.com</strong> Please enter it below.
-                </p>
+            </form>
+        </mat-card>
+    </mat-tab>
+    <mat-tab [disabled]="!submitted">
+        <ng-template mat-tab-label>
+            <div class="circle-orng">3</div>
+            <div class="tab-label">Company Details</div>
+        </ng-template>
+        <div class="tab">
+            <p class="tab-title"> Enter your OTP</p>
+            <p class="tab-content">
+                For tour security, we need to verify your identity. We sent a 5-digit code to
+                <strong>name@domain.com</strong> Please enter it below.
+            </p>
+        </div>
+        <mat-card class="card">
+            <span class="input-otp">Enter your code</span>
+            <div fxLayoutAlign="center center">
+                <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="config"></ng-otp-input>
             </div>
-            <mat-card class="card">
-                <span class="input-otp">Enter your code</span>
-                <div fxLayoutAlign="center center">
-                    <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="config"></ng-otp-input>
-                </div>
-                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
-                    <button fxFlex="30" type="button" class="cancel-button" mat-raised-button (click)="moveToSelectedTab(1)">BACK</button>
-                    <button fxFlex="70" type="submit" class="save-button" (click)="saveData()" mat-raised-button>Verify</button>
-                </div>
-                <mat-divider></mat-divider>
-                <div class="resend" (click)="resend ()">
-                    Didn't receive the email? check you spam filter for an email name domain@admin.com
-                </div>
-            </mat-card>
-        </mat-tab>
-    </form>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+                <button fxFlex="30" type="button" class="cancel-button gender-button" mat-raised-button (click)="moveToSelectedTab(1)">BACK</button>
+                <button fxFlex="70" type="submit" class="save-button" mat-raised-button [disabled]="!isOtpValidation" [ngClass]="{'disabled-button': !isOtpValidation}" (click)="saveData()">Verify</button>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="resend">
+                Didn't receive the email? check you spam filter for an email name domain@admin.com
+            </div>
+        </mat-card>
+    </mat-tab>
 </mat-tab-group>

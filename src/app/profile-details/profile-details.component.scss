@@ -1,165 +1,168 @@
 @import "../../assets/common.scss";
-
 .example-input-label,
 .example-add-tab-button,
 .example-delete-tab-button {
-  margin: 8px;
+    margin: 8px;
 }
 
 .card {
-  height: auto;
-  margin: 2% auto;
-  max-width: 400px;
-  background-color: $white-color;
-  padding: 25px;
-  text-align: left;
+    height: auto;
+    margin: 2% auto;
+    max-width: 400px;
+    background-color: $white-color;
+    padding: 25px;
+    text-align: left;
 }
 
 .circle-orng {
-  @include tabStatus(50%, $white-color, $active, 2px, 22px, 22px);
+    @include tabStatus(50%, $white-color, $active, 2px, 22px, 22px);
 }
 
 .circle-blue {
-  @include tabStatus(50%, $white-color, #2a3c56, 2px, 22px, 22px);
+    @include tabStatus(50%, $white-color, #2a3c56, 2px, 22px, 22px);
 }
 
 .label {
-  color: #ab9f9f;
-  font-size: 17px;
-  margin-top: 10px;
+    color: #ab9f9f;
+    font-size: 17px;
+    margin-top: 10px;
 }
 
 .input-field {
-  height: 38px;
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 4px;
-  padding: 12px 10px;
-  display: inline-block;
-  border: 1px solid #d8d4d4;
-  box-sizing: border-box;
+    height: 38px;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 4px;
+    padding: 12px 10px;
+    display: inline-block;
+    border: 1px solid #d8d4d4;
+    box-sizing: border-box;
 }
 
 .tab {
-  margin: 0 auto;
-  text-align: center;
-  max-width: 450px;
+    margin: 0 auto;
+    text-align: center;
+    max-width: 450px;
 }
 
 .tab-title {
-  font-size: 35px;
-  font-weight: 600;
-  margin: 40px 0;
+    font-size: 35px;
+    font-weight: 600;
+    margin: 40px 0;
 }
 
 .tab-content {
-  font-size: 13px;
-  font-family: sans-serif;
+    font-size: 13px;
+    font-family: sans-serif;
 }
 
 .upload {
-  margin: auto;
-  font-size: 16px;
-  cursor: pointer;
-  color: #ed5901;
+    margin: auto;
+    font-size: 16px;
+    cursor: pointer;
+    color: #ed5901;
 }
 
 .resend {
-  text-align: center;
-  cursor: pointer;
-  padding: 20px 0;
+    text-align: center;
+    cursor: pointer;
+    padding: 20px 0;
 }
 
 .tab-label {
-  color: $white-color;
-  padding-left: 5px;
+    color: $white-color;
+    padding-left: 5px;
 }
 
 img.rounded {
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 20px;
-  border-style: dashed;
-  border-color: #ab9f9f;
-  border-width: 1px;
-  height: 100px;
-  width: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border-style: dashed;
+    border-color: #ab9f9f;
+    border-width: 1px;
+    height: 100px;
+    width: 100px;
 }
 
 img.rounded-input {
-  object-fit: cover;
-  border-radius: 50%;
-  margin: 0px 5px;
-  height: 15px;
-  width: 18px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0px 5px;
+    height: 15px;
+    width: 18px;
 }
 
 .hide-element {
-  display: none;
+    display: none;
 }
 
 .termsAndCondition {
-  color: $active;
-  cursor: pointer;
+    color: $active;
+    cursor: pointer;
 }
 
 .example-form {
-  padding: 0px 20px;
+    padding: 0px 20px;
 }
 
 .save-button {
-  @include activeButton(38px, 100%, $white-color, $active, 1px solid $active, 5px, none, 20px, 10px);
+    @include activeButton(38px, 100%, $white-color, $active, 1px solid $active, 5px, none, 15px 0px);
 }
 
 .cancel-button {
-  @include activeButton(38px, 100%, #000000, #f9fafa, 1px solid #f9fafa, 5px, none, 20px, 10px);
+    @include activeButton(38px, 100%, #000000, #f9fafa, 1px solid #f9fafa, 5px, none, 15px 0px);
 }
 
 .disabled-button {
-  opacity: 0.5;
+    opacity: 0.5;
 }
 
-.input-otp{
-  color: #ab9f9f;
-  font-size: 17px;
-  padding-left: 25px;
+.input-otp {
+    color: #ab9f9f;
+    font-size: 17px;
+    padding-left: 25px;
 }
 
 .telecode {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .selected-gender {
-  background-color: #fdeee6;
-  color: $active;
+    background-color: #fdeee6;
+    color: $active;
+}
+
+.gender-button {
+    margin-right: 15px;
 }
 
 ::ng-deep .mat-tab-header {
-  background-color: #2e4b64;
+    background-color: #2e4b64;
 }
 
 ::ng-deep .mat-form-field-underline {
-  display: none;
+    display: none;
 }
 
 ::ng-deep .mat-tab-label,
 ::ng-deep .mat-tab-label-active {
-  min-width: 250px !important;
+    min-width: 250px !important;
 }
 
 ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
-  padding: 0;
+    padding: 0;
 }
 
 ::ng-deep .mat-form-field-infix {
-  border-top: none;
+    border-top: none;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
 }
 
 input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }

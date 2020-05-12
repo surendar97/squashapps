@@ -18,19 +18,20 @@ export class ProfileDetailsComponent implements OnInit {
 
   selectedCountry: any;
   selectedIndex: number;
-  userProfileTab = false;
-  companyProfileTab = false;
   isMale = false;
   isFemale = false;
   isOthers = false;
-  url: any = "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png";
-  isProfileValidation = false;
+  isOtpValidation = false;  
   countries: any;
-  otp: number;s
+  countryStates: any[] = [];
+  states: any[] = [];
+  otp: any;
   selectedState: string;
-  state : [];
   selectedCountriesFlag: string;
-
+  submitted = false;
+  emailRegEx = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+  url: any = "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png";
+  
   config = {
     allowNumbersOnly: false,
     length: 5,
@@ -41,53 +42,63 @@ export class ProfileDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.userDetails = this.formBuilder.group({
-      fullName: ['', Validators.required],
-      gender: [''],
-      country: [''],
-      state: [''],
-      teleCode: [''],
-      mobileNumber: ['', Validators.required],
-      companyName: ['', Validators.required],
-      emailId: ['', [Validators.required, Validators.email]],
-      jobTitle: ['', Validators.required],
-      experience: ['', Validators.required],
-      termsAndCondition: [false, Validators.requiredTrue]
+      personalDetail: this.formBuilder.group({
+        fullName: ['', Validators.required],
+        gender: [''],
+        country: [''],
+        states: [''],
+        teleCode: [''],
+        mobileNumber: ['', [Validators.required, Validators.minLength(10)]]
+      }),
+      companyDetail: this.formBuilder.group({
+        companyName: ['', Validators.required],
+        emailId: ['', [Validators.required, Validators.pattern(this.emailRegEx)]],
+        jobTitle: ['', Validators.required],
+        experience: ['', Validators.required],
+        termsAndCondition: [false, Validators.requiredTrue]
+      })
     });
     this.getCountries();
     this.selectGender('male');
-  } 
-  
+  }
+
+  get personalDetailControles() {
+    return (this.userDetails.get('personalDetail') as FormGroup).controls;
+  }
+  get companyDetailControles() {
+    return (this.userDetails.get('companyDetail') as FormGroup).controls;
+  }
+  get personalDetail() {
+    return this.userDetails.get('personalDetail');
+  }
+  get companyDetail() {
+    return this.userDetails.get('companyDetail');
+  }
 
   setTelephoneCode(county) {
     this.selectedCountry = county;
-    this.userProfileControl['country'].setValue(this.selectedCountry.name)
-    this.userProfileControl['teleCode'].setValue('+' + this.selectedCountry.callingCodes)
+    this.personalDetailControles['country'].setValue(this.selectedCountry.name)
+    this.personalDetailControles['teleCode'].setValue('+' + this.selectedCountry.callingCodes)
     this.selectedCountriesFlag = this.selectedCountry.flag;
-    this.fiterStates ();
-  }  
+    this.fiterStates();
+  }
 
-  fiterStates (){
-    for (let i =0; i< this.states.length;i++) {
-      if( this.selectedCountry.name === this.states[i].country){
-          this.state = this.states[i].states;
-          this.selectedState = this.states[0];
-          return;
+  fiterStates() {
+    for (let i = 0; i < this.countryStates.length; i++) {
+      if (this.selectedCountry.name === this.countryStates[i].country) {
+        this.states = this.countryStates[i].states;
+        this.selectedState = this.states[0];
+        return;
       }
-    }    
+    }
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
-    this.fieldValidation();
     this.selectedIndex = tabChangeEvent.index;
   }
 
   moveToSelectedTab(tab: number) {
-    this.fieldValidation();
     this.selectedIndex = tab;
-  }
-
-  fileUpload() {
-    $('input[type=file]').trigger('click');
   }
 
   selectGender(gender) {
@@ -96,32 +107,26 @@ export class ProfileDetailsComponent implements OnInit {
         this.isMale = false;
         this.isFemale = false;
         this.isOthers = true;
-        this.userProfileControl['gender'].setValue('others');
+        this.personalDetailControles['gender'].setValue('others');
         break;
       case 'female':
         this.isMale = false;
         this.isFemale = true;
         this.isOthers = false;
-        this.userProfileControl['gender'].setValue('female');
+        this.personalDetailControles['gender'].setValue('female');
         break;
       default:
         this.isMale = true;
         this.isFemale = false;
         this.isOthers = false;
-        this.userProfileControl['gender'].setValue('male');
+        this.personalDetailControles['gender'].setValue('male');
     }
   }
 
-  fieldValidation() {
-    if (!this.userProfileControl.fullName.errors &&
-      !this.userProfileControl.mobileNumber.errors) {
-      this.userProfileTab = true;
-    }
-    if (this.userDetails.valid) {
-      this.companyProfileTab = true;
-    }
-  }  
- 
+  fileUpload() {
+    $('input[type=file]').trigger('click');
+  }
+
   onSelectFile(event) {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
@@ -132,37 +137,52 @@ export class ProfileDetailsComponent implements OnInit {
     }
   }
 
-  onOtpChange (event) {
-    this.otp = event;
+  sendOtp (){
+    this.submitted = true;
   }
 
-  get userProfileControl() {
-    return this.userDetails.controls;
-  }   
+  onOtpChange(event) {
+    this.otp = event;
+    if (this.otp.length === 5) {
+      this.isOtpValidation = true;
+    } else {
+      this.isOtpValidation = false;
+    }
+  } 
 
   getCountries() {
     this.service.getCountries().subscribe(res => {
       this.countries = res;
-      this.getStates();      
+      this.getStates();
     })
   }
 
-  states : any[] = [];
-
   getStates() {
     this.service.getStates().subscribe(res => {
-      this.states = res.countries;
+      this.countryStates = res.countries;
       this.setTelephoneCode(this.countries[0]);
     })
   }
 
-  saveData () {
-    this.fieldValidation ();
-    localStorage.setItem('value', JSON.stringify(this.userDetails.value));
-    this.route.navigate(['dashboard']); 
+  saveData() {
+    if (this.isOtpValidation) {
+      localStorage.setItem('value', JSON.stringify(this.userDetails.value));
+      const data = localStorage.getItem('value');
+      console.log(data);
+      this.route.navigate(['dashboard']);
+    }
   }
-  
-  resend() {
 
-  } 
+  personalDetailValidation() {
+    if (this.personalDetail.valid) {
+      this.moveToSelectedTab(1);
+    }
+  }
+
+  companyDetailValidation() {
+    if (this.companyDetail.valid) {
+      this.moveToSelectedTab(2);
+    }
+  }
+
 }
